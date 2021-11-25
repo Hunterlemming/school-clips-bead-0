@@ -2,7 +2,7 @@
 	(slot cel (allowed-symbols nil fogyas tartas noveles))
 	(slot sport-mennyiseg (allowed-symbols nil keves normal sok))
 	(slot etkezes-frekvencia (allowed-symbols nil ritkan normal gyakran))
-	(slot etel-elkészitesi-ido (allowed-symbols nil keves normal sok))
+	(slot etel-elkeszitesi-ido (allowed-symbols nil keves normal sok))
 	(slot etel-ar (allowed-symbols nil keves normal sok))
 )
 
@@ -12,12 +12,14 @@
 
 ; Szabalyok
 
+; Pizza
+
 (defrule pizza-tartas ""
 	(declare (salience 10))
 	(diet	(cel tartas)
 			(sport-mennyiseg sok)
 			(etkezes-frekvencia ritkan)
-			(etel-elkészitesi-ido normal)
+			(etel-elkeszitesi-ido normal)
 			(etel-ar normal)
 	)
 =>
@@ -29,13 +31,61 @@
 	(and
 		(diet	(cel noveles)
 				(etkezes-frekvencia normal)
-				(etel-elkészitesi-ido normal)
+				(etel-elkeszitesi-ido normal)
 				(etel-ar normal))
 		(or (diet (sport-mennyiseg keves))
 			(diet (sport-mennyiseg normal))))
 =>
 	(printout t "Pizza" crlf)
 	(halt))
+
+
+; Csirkemell + Rizs
+
+(defrule csirrizs-fogyas ""
+	(declare (salience 10))
+	(diet	(cel fogyas)
+			(sport-mennyiseg sok)
+			(etkezes-frekvencia normal)
+			(etel-elkeszitesi-ido sok)
+			(etel-ar sok)
+	)
+=>
+	(printout t "Csirkemell + Rizs" crlf)
+	(halt))
+
+(defrule csirrizs-tartas ""
+	(declare (salience 10))
+	(diet	(cel tartas)
+			(sport-mennyiseg keves)
+			(etkezes-frekvencia normal)
+			(etel-elkeszitesi-ido sok)
+			(etel-ar sok)
+	)
+=>
+	(printout t "Csirkemell + Rizs" crlf)
+	(halt))
+
+(defrule csirrizs-noveles ""
+	(declare (salience 10))
+	(and
+		(diet	(cel tartas)
+				(etel-elkeszitesi-ido sok)
+				(etel-ar sok)
+		)
+		(or (and (diet (sport-mennyiseg normal))
+				 (or (diet (etkezes-frekvencia normal))
+					 (diet (etkezes-frekvencia gyakran))))
+			(and (diet (sport-mennyiseg sok))
+				 (diet (etkezes-frekvencia gyakran))))
+	)
+=>
+	(printout t "Csirkemell + Rizs" crlf)
+	(halt))
+	
+
+; Puffasztott Rizs
+
 
 
 
@@ -71,14 +121,14 @@
 	(modify ?d (etkezes-frekvencia (read)))
 )
 
-(defrule question-etel-elkészitesi-ido ""
-	?d <- (diet (etel-elkészitesi-ido nil))
+(defrule question-etel-elkeszitesi-ido ""
+	?d <- (diet (etel-elkeszitesi-ido nil))
 =>
 	(printout t "Mennyi idot toltenel az etel elkeszitesevel?" crlf)
 	(printout t "	keves	(2-5m)" crlf)
 	(printout t "	normal	(20-40m)" crlf)
 	(printout t "	sok		(1h +)" crlf)
-	(modify ?d (etel-elkészitesi-ido (read)))
+	(modify ?d (etel-elkeszitesi-ido (read)))
 )
 
 (defrule question-etel-ar ""
