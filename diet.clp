@@ -15,7 +15,7 @@
 ; Pizza
 
 (defrule pizza-tartas ""
-	(declare (salience 10))
+	(declare (salience 100))
 	(diet	(cel tartas)
 			(sport-mennyiseg sok)
 			(etkezes-frekvencia ritkan)
@@ -43,7 +43,7 @@
 ; Csirkemell + Rizs
 
 (defrule csirrizs-fogyas ""
-	(declare (salience 10))
+	(declare (salience 100))
 	(diet	(cel fogyas)
 			(sport-mennyiseg sok)
 			(etkezes-frekvencia normal)
@@ -55,7 +55,7 @@
 	(halt))
 
 (defrule csirrizs-tartas ""
-	(declare (salience 10))
+	(declare (salience 100))
 	(diet	(cel tartas)
 			(sport-mennyiseg keves)
 			(etkezes-frekvencia normal)
@@ -86,6 +86,60 @@
 
 ; Puffasztott Rizs
 
+(defrule puffrizs-fogyas ""
+	(declare (salience 10))
+	(and
+		(diet	(cel fogyas)
+				(etel-elkeszitesi-ido keves)
+				(etel-ar keves)
+		)
+		(or (and (diet (sport-mennyiseg keves))
+				 (diet (etkezes-frekvencia ritkan)))
+			(or (diet (sport-mennyiseg normal))
+				(diet (sport-mennyiseg sok))))
+	)
+=>
+	(printout t "Puffasztott Rizs" crlf)
+	(halt))
+
+(defrule puffrizs-tartas ""
+	(declare (salience 100))
+	(diet	(cel tartas)
+			(sport-mennyiseg keves)
+			(etkezes-frekvencia gyakran)
+			(etel-elkeszitesi-ido keves)
+			(etel-ar keves)
+	)
+=>
+	(printout t "Puffasztott Rizs" crlf)
+	(halt))
+	
+
+; Instant Kaja
+
+(defrule instkaja-tartas ""
+	(declare (salience 100))
+	(diet	(cel tartas)
+			(sport-mennyiseg keves)
+			(etkezes-frekvencia normal)
+			(etel-elkeszitesi-ido keves)
+			(etel-ar normal)
+	)
+=>
+	(printout t "Instant Kaja" crlf)
+	(halt))
+
+(defrule instkaja-fogyas ""
+	(declare (salience 100))
+	(diet	(cel fogyas)
+			(sport-mennyiseg sok)
+			(etkezes-frekvencia normal)
+			(etel-elkeszitesi-ido keves)
+			(etel-ar normal)
+	)
+=>
+	(printout t "Instant Kaja" crlf)
+	(halt))
 
 
 
